@@ -1,3 +1,4 @@
+import datetime
 import math
 import tiktoken
 import torch
@@ -187,6 +188,7 @@ x = tokens.to(device)  # (5, 8)
 
 torch.manual_seed(42)
 
+start_time = datetime.datetime.now()
 while x.size(1) < max_length:
     with torch.no_grad():
         logits = model(x)  # (B, T, vocab_size)
@@ -201,3 +203,6 @@ for i in range(num_return_sequences):
     tokens = x[i, :max_length].tolist()
     decoded = enc.decode(tokens)
     print(">", decoded)
+
+end_time = datetime.datetime.now()
+print(f"inference taking {end_time - start_time}")
